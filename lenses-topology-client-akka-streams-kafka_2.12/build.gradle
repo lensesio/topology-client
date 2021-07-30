@@ -1,0 +1,14 @@
+dependencies {
+    compile project(":lenses-topology-client-kafka")
+    compile "com.typesafe.akka:akka-stream-kafka_2.12:2.1.1"
+    compile "com.typesafe.akka:akka-stream_2.12:2.6.15"
+}
+
+
+configurations.all {
+    resolutionStrategy {
+        force "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    }
+}

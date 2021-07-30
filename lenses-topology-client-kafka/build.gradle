@@ -1,0 +1,14 @@
+dependencies {
+    compile project(":lenses-topology-client-core")
+    compile 'org.apache.kafka:kafka-clients:2.8.0'
+    compile 'org.apache.kafka:kafka-streams:2.8.0'
+}
+
+
+configurations.all {
+    resolutionStrategy {
+        force "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    }
+}

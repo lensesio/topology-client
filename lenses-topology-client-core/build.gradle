@@ -1,0 +1,13 @@
+dependencies {
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+        force "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    }
+}

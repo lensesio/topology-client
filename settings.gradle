@@ -1,0 +1,3 @@
+include 'lenses-topology-client-core',
+        'lenses-topology-client-kafka',
+        'lenses-topology-client-akka-streams-kafka_2.12'

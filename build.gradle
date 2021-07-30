@@ -1,0 +1,139 @@
+buildscript {
+    ext.log4j_version = '2.9.1'
+    ext.joda_version = '2.9.9'
+    ext.avro_version = '1.8.2'
+    ext.httpclient_version = '4.5.3'
+    ext.jackson_version = '2.10.5'
+    ext.junit_version = '5.7.1'
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.3'
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0'
+        classpath 'net.researchgate:gradle-release:2.7.0'
+    }
+}
+
+plugins {
+    id 'net.researchgate.release' version '2.8.1'
+    id "io.codearte.nexus-staging" version "0.30.0"
+    id "com.github.hierynomus.license" version "0.15.0"
+}
+
+allprojects {
+    apply plugin: 'signing'
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+
+    group = 'io.lenses'
+    description = "lenses-topology-client"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    ext {
+        slf4jVersion = "1.7.7"
+        gitBranch = System.getenv('GIT_BRANCH')
+        gitTag = ("git describe --abbrev=0 --tags ${gitBranch}").execute().text.trim().replace('v', '')
+    }
+
+    if (publishMvn.toBoolean()) {
+        version = gitTag
+    } else{
+        version = "4.3.0-SNAPSHOT"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://packages.confluent.io/maven/" }
+        maven { url "http://repo.typesafe.com/typesafe/releases/" }
+    }
+
+    dependencies {
+        implementation "com.fasterxml.jackson.core:jackson-annotations:${jackson_version}"
+        testCompile 'org.slf4j:slf4j-api:1.7.25'
+        testCompile 'ch.qos.logback:logback-classic:1.2.3'
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+
+    release {
+        failOnPublishNeeded = false
+    }
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
+
+    build {
+        afterReleaseBuild.dependsOn uploadArchives
+    }
+
+    signing {
+        required { gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                // POM signature
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                if (publishMvn.toBoolean()) {
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+                }
+
+                pom.project {
+                    name 'lenses-topology-client'
+                    packaging 'jar'
+                    description 'lenses-topology-client'
+                    url 'http://www.lenses.io/lenses-topology-client'
+
+                    scm {
+                        connection 'scm:git:https://github.com/lensesio/topology-client'
+                        developerConnection 'scm:git:http://lenses.io'
+                        url 'https://github.com/lensesio/topology-client'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache 2.0 License'
+                            url 'https://opensource.org/licenses/Apache-2.0'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
