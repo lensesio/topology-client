@@ -36,6 +36,16 @@ pipeline {
             }
         }
 
+        stage('Build') {
+            steps {
+                script {
+                    docker.image('gradle:5.1-jdk8').inside {
+                        sh './gradlew clean build'
+                    }
+                }
+            }
+        }
+
         // Build either 'dev' or 'prod' docker image of API docs. The first can
         // be triggered by a backend job build or manually by user whereas the latter
         // is reserved to be build only manually.
