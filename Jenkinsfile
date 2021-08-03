@@ -46,9 +46,24 @@ pipeline {
             }
         }
 
-        // Build either 'dev' or 'prod' docker image of API docs. The first can
-        // be triggered by a backend job build or manually by user whereas the latter
-        // is reserved to be build only manually.
+        stage('Publish') {
+            steps {
+                script {
+                    docker.image('gradle:5.1-jdk8').inside {
+                        withCredentials([
+                            file(credentialsId: 'a3a9a2bd-6c2e-40bf-be0f-1e24f3597d90', variable: 'GRADLE_PROPERTIES'),
+                            file(credentialsId: 'e5c260e3-0bc6-4e7d-a4c0-4138d6305a8b', variable: 'SIGNING_GPG_KEY')
+                        ]) {
+                            sh 'cat $GRADLE_PROPERTIES > gradle.properties '
+                            sh 'echo -e "\nsigning.secretKeyRingFile=$SIGNING_GPG_KEY" >> gradle.properties'
+                            /* sh './gradlew uploadArchives' */
+                            /* sh 'rm -f gradle.properties' */
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     /* post { */
