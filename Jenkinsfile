@@ -17,6 +17,9 @@ pipeline {
     }
 
    /* environment { } */
+   parameters {
+        booleanParam(name : 'PUBLISH_BUILD', defaultValue: false, description: 'Publish to maven')
+    }
 
     stages() {
         // Optional stage used during development that can print both env. vars.
@@ -47,6 +50,9 @@ pipeline {
         }
 
         stage('Publish') {
+            when {
+                equals expected: "true", actual: env.PUBLISH_BUILD
+            }
             steps {
                 script {
                     docker.image('gradle:5.1-jdk8').inside {
