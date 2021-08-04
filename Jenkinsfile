@@ -1,8 +1,5 @@
 #!/usr/bin/env groovy
 
-// Files used for this Jenkins CICD job:
-//.
-
 pipeline {
     agent { label 'docker && ephemeral' }
 
@@ -72,7 +69,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     /* post { */
