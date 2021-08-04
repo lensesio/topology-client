@@ -126,6 +126,13 @@ allprojects {
                         url 'https://github.com/lensesio/topology-client'
                     }
 
+                    developers {
+                        developer {
+                            id 'stheppi'
+                            name 'Stefan Bocutiu'
+                        }
+                    }
+
                     licenses {
                         license {
                             name 'The Apache 2.0 License'
