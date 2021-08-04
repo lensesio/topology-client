@@ -64,6 +64,8 @@ pipeline {
                             sh 'cat $GRADLE_PROPERTIES > gradle.properties '
                             sh 'echo -e "\nsigning.secretKeyRingFile=$SIGNING_GPG_KEY" >> gradle.properties'
 
+                            /* TO-DO: remove it */ 
+                            sh 'printenv | sort'
                             sh './gradlew uploadArchives'
                             sh 'rm -f gradle.properties'
                         }
