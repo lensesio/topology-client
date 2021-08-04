@@ -40,15 +40,15 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                script {
-                    docker.image('gradle:5.1-jdk8').inside {
-                        sh './gradlew clean build'
-                    }
-                }
-            }
-        }
+        /* stage('Build') { */
+        /*     steps { */
+        /*         script { */
+        /*             docker.image('gradle:5.1-jdk8').inside { */
+        /*                 sh './gradlew clean build' */
+        /*             } */
+        /*         } */
+        /*     } */
+        /* } */
 
         stage('Publish') {
             when {
@@ -68,7 +68,7 @@ pipeline {
                             /* TO-DO: remove it */ 
                             sh 'printenv | sort'
 
-                            sh './gradlew --debug signArchives uploadArchives closeAndReleaseRepository'
+                            sh './gradlew --debug clean build signArchives uploadArchives closeAndReleaseRepository'
 
                             /* TO-DO: uncomment it before PR */ 
                             /* sh 'rm -f gradle.properties' */
