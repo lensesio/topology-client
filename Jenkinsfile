@@ -52,7 +52,8 @@ pipeline {
 
         stage('Publish') {
             when {
-                equals expected: "true", actual: env.PUBLISH_BUILD
+                /* branch pattern: "release-\\d+", comparator: "REGEXP" */
+                tag "v*"
             }
             steps {
                 script {
