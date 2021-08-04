@@ -43,12 +43,14 @@ allprojects {
         gitTag = ("git describe --abbrev=0 --tags").execute().text.trim().replace('v', '')
     }
 
+    println("GITTAG:" + gitTag )
     if (publishMvn.toBoolean()) {
         version = gitTag
     } else{
         version = "4.3.0-SNAPSHOT"
     }
 
+    println("VERSION=" + version)
     repositories {
         mavenLocal()
         mavenCentral()
