@@ -19,6 +19,7 @@ pipeline {
    /* environment { } */
    parameters {
         booleanParam(name : 'PUBLISH_BUILD', defaultValue: false, description: 'Publish to maven')
+        booleanParam(name : 'DRY_RUN', defaultValue: false, description: 'Print env. vars. and exit')
     }
 
     stages() {
@@ -62,6 +63,7 @@ pipeline {
                         ]) {
                             sh 'cat $GRADLE_PROPERTIES > gradle.properties '
                             sh 'echo -e "\nsigning.secretKeyRingFile=$SIGNING_GPG_KEY" >> gradle.properties'
+
                             /* sh './gradlew uploadArchives' */
                             /* sh 'rm -f gradle.properties' */
                         }
