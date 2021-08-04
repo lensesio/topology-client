@@ -62,6 +62,7 @@ pipeline {
                             file(credentialsId: 'e5c260e3-0bc6-4e7d-a4c0-4138d6305a8b', variable: 'SIGNING_GPG_KEY')
                         ]) {
                             sh 'cat $GRADLE_PROPERTIES > gradle.properties '
+                            sh 'echo "\npublishMvn=true" >> gradle.properties'
                             sh 'echo -e "\nsigning.secretKeyRingFile=$SIGNING_GPG_KEY" >> gradle.properties'
 
                             /* TO-DO: remove it */ 
