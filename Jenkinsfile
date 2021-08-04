@@ -68,7 +68,7 @@ pipeline {
                             /* TO-DO: remove it */ 
                             sh 'printenv | sort'
 
-                            sh './gradlew uploadArchives'
+                            sh './gradlew signArchives uploadArchives closeAndReleaseRepository'
 
                             /* TO-DO: uncomment it before PR */ 
                             /* sh 'rm -f gradle.properties' */
