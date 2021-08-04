@@ -16,6 +16,7 @@ pipeline {
         timeout(time: 5, unit: 'MINUTES')
     }
 
+   /* environment { } */
    parameters {
         booleanParam(name : 'PUBLISH_BUILD', defaultValue: false, description: 'Publish to maven')
         booleanParam(name : 'DRY_RUN', defaultValue: false, description: 'Print env. vars. and exit')
