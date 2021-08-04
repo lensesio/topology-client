@@ -40,20 +40,19 @@ pipeline {
             }
         }
 
-        /* stage('Build') { */
-        /*     steps { */
-        /*         script { */
-        /*             docker.image('gradle:5.1-jdk8').inside { */
-        /*                 sh './gradlew clean build' */
-        /*             } */
-        /*         } */
-        /*     } */
-        /* } */
+        stage('Build') {
+            steps {
+                script {
+                    docker.image('gradle:5.1-jdk8').inside {
+                        sh './gradlew clean build'
+                    }
+                }
+            }
+        }
 
         stage('Publish') {
             when {
-                /* branch pattern: "release-\\d+", comparator: "REGEXP" */
-                tag "v*"
+                tag pattern: "v[0-9]+\\.[0-9]+\\.[0-9]+", comparator: "REGEXP"
             }
             steps {
                 script {
