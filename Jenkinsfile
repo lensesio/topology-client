@@ -52,8 +52,8 @@ pipeline {
 
         stage('Publish') {
             when {
-                /* branch pattern: "release-\\d+", comparator: "REGEXP" */
-                tag "v*"
+                tag pattern: "v\\d+\\.d+\\.d+", comparator: "REGEXP"
+                /* tag "v*" */
             }
             steps {
                 script {
