@@ -18,7 +18,6 @@ pipeline {
 
    /* environment { } */
    parameters {
-        booleanParam(name : 'PUBLISH_BUILD', defaultValue: false, description: 'Publish to maven')
         booleanParam(name : 'DRY_RUN', defaultValue: false, description: 'Print env. vars. and exit')
     }
 
@@ -65,13 +64,9 @@ pipeline {
                             sh 'echo "\npublishMvn=true" >> gradle.properties'
                             sh 'echo -e "\nsigning.secretKeyRingFile=$SIGNING_GPG_KEY" >> gradle.properties'
 
-                            /* TO-DO: remove it */ 
-                            sh 'printenv | sort'
-
                             sh './gradlew clean build signArchives uploadArchives closeAndReleaseRepository'
 
-                            /* TO-DO: uncomment it before PR */ 
-                            /* sh 'rm -f gradle.properties' */
+                            sh 'rm -f gradle.properties'
                         }
                     }
                 }
