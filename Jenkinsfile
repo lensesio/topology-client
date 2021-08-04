@@ -69,6 +69,7 @@ pipeline {
                             sh 'printenv | sort'
 
                             /* sh './gradlew --debug clean build signArchives uploadArchives closeAndReleaseRepository' */
+                            sh 'git describe --tags'
                             sh './gradlew --version'
                             sh './gradlew --debug clean build'
 
