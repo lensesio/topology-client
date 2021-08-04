@@ -13,7 +13,6 @@ pipeline {
         timeout(time: 5, unit: 'MINUTES')
     }
 
-   /* environment { } */
    parameters {
         booleanParam(name : 'DRY_RUN', defaultValue: false, description: 'Print env. vars. and exit')
     }
