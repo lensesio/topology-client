@@ -40,7 +40,7 @@ allprojects {
     ext {
         slf4jVersion = "1.7.7"
         gitBranch = System.getenv('GIT_BRANCH')
-        gitTag = ("git describe --abbrev=0 --tags ${gitBranch}").execute().text.trim().replace('v', '')
+        gitTag = ("git describe --abbrev=0 --tags").execute().text.trim().replace('v', '')
     }
 
     if (publishMvn.toBoolean()) {
@@ -124,6 +124,13 @@ allprojects {
                         connection 'scm:git:https://github.com/lensesio/topology-client'
                         developerConnection 'scm:git:http://lenses.io'
                         url 'https://github.com/lensesio/topology-client'
+                    }
+
+                    developers {
+                        developer {
+                            id 'stheppi'
+                            name 'Stefan Bocutiu'
+                        }
                     }
 
                     licenses {
